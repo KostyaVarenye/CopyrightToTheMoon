@@ -24,6 +24,9 @@ To sum it up; I wanted to pioneer a new way of creating *legal* smart contracts 
   - MetaMask - crypto wallet.
   - Remix.ethereum - IDE for development of the smart contract.
 ***
+# Developed architecture:
+![](src/assets/full%20diagram.drawio.png)
+***
 # Showcase:
 ## Homepage
 ![](src/assets/homepage.png)
