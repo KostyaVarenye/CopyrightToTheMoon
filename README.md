@@ -1,5 +1,5 @@
 # CopyrightToTheMoon
-**Grad. project for college, used with serverless functions**
+**Grad. project for college, used with the API [serverlessapi](https://github.com/KostyaVarenye/temp-serverless-function)**
 ***
 # Purpose:
   I've developed this website as a demo for copyright owners so that they will be able to create smart contract licenses on the blockchain and get paid in *Ethereum*.
@@ -25,4 +25,17 @@ To sum it up; I wanted to pioneer a new way of creating *legal* smart contracts 
   - Remix.ethereum - IDE for development of the smart contract.
 ***
 # Showcase:
-
+## Homepage
+![](src/assets/homepage.png)
+***
+## Products
+![](src/assets/productspage.png)
+***
+## Cart
+![](src/assets/cart.png)
+***
+## Metamask wallet test
+![](src/assets/metamasktest.png)
+***
+## Remix IDE
+![](src/assets/remixide.png)
