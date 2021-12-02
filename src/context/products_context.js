@@ -1,0 +1,90 @@
+import axios from "axios";
+import React, { useContext, useEffect, useReducer } from "react";
+import reducer from "../reducers/products_reducer";
+import { products_url as url } from "../utils/constants";
+import {
+  SIDEBAR_OPEN,
+  SIDEBAR_CLOSE,
+  GET_PRODUCTS_BEGIN,
+  GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS_ERROR,
+  GET_SINGLE_PRODUCT_BEGIN,
+  GET_SINGLE_PRODUCT_SUCCESS,
+  GET_SINGLE_PRODUCT_ERROR,
+} from "../actions";
+
+/*
+  isSidebarOpen: is used for showing/hiding the sidebar on the small screen
+  products_loading: when products are loading
+  products_error: if some error happens during fetching of data from api by axios
+  products: [], array of products
+  featured_products: [], will be in the reducer, its the main page featured products
+  single_product_loading: used for loading the product page
+  single_product_error: used to invoke error message when loading single product
+  single_product: {}, object of the product in case of a successful load
+*/
+
+// initial state of the app when loading products
+const initialState = {
+  isSidebarOpen: false,
+  products_loading: false,
+  products_error: false,
+  products: [],
+  featured_products: [],
+  single_product_loading: false,
+  single_product_error: false,
+  single_product: {},
+};
+
+const ProductsContext = React.createContext();
+// creating context for products to pass through into components using dispatcher functions
+export const ProductsProvider = ({ children }) => {
+  //use reducer with dispatch controlling the state
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const openSidebar = () => {
+    dispatch({ type: SIDEBAR_OPEN });
+  };
+
+  const closeSidebar = () => {
+    dispatch({ type: SIDEBAR_CLOSE });
+  };
+
+  const fetchProducts = async (url) => {
+    dispatch({ type: GET_PRODUCTS_BEGIN });
+    try {
+      const response = await axios.get(url);
+      const products = response.data;
+      dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });
+    } catch (error) {
+      dispatch({ type: GET_PRODUCTS_ERROR });
+    }
+  };
+  const fetchSingleProduct = async (url) => {
+    dispatch({ type: GET_SINGLE_PRODUCT_BEGIN });
+    try {
+      const response = await axios.get(url);
+      const singleProduct = response.data;
+      dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: singleProduct });
+    } catch (error) {
+      dispatch({ type: GET_SINGLE_PRODUCT_ERROR });
+    }
+  };
+  // fetch products from API
+  useEffect(() => {
+    fetchProducts(url);
+  }, []);
+
+  // do not forget to pass the value of the state into the context!
+  return (
+    <ProductsContext.Provider
+      value={{ ...state, openSidebar, closeSidebar, fetchSingleProduct }}
+    >
+      {children}
+    </ProductsContext.Provider>
+  );
+};
+// make sure use
+export const useProductsContext = () => {
+  return useContext(ProductsContext);
+};
